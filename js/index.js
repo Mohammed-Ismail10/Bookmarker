@@ -21,6 +21,7 @@ function addWebsite() {
     namee: siteNameInput.value,
     url: siteLinkInput.value,
   };
+  checkHttp(webSite);
   siteNameArr.push(webSite);
   localStorage.setItem(`web`, JSON.stringify(siteNameArr));
   displayWebsite(siteNameArr);
@@ -28,6 +29,15 @@ function addWebsite() {
 }
 document.getElementById(`submitBtn`).onclick = function () { addWebsite() };
 // Add website
+
+// check on url
+function checkHttp(webSite) {
+  if (webSite.url.includes("http://") == false && webSite.url.includes("https://") == false) {
+    webSite.url = "http://" + siteLinkInput.value;
+  }
+}
+// check on url
+
 
 
 // Desplay website
@@ -37,7 +47,7 @@ function displayWebsite(siteNameArr) {
     box += `<tr>
     <td>${i + 1}</td>
     <td class="fs-5">${siteNameArr[i].namee}</td>
-    <td><a href="http://${siteNameArr[i].url}" target="_blank" class="btn btn-success" >Visit</a></td>
+    <td><a href="${siteNameArr[i].url}" target="_blank" class="btn btn-success" >Visit</a></td>
     <td><button class="btn btn-primary" onclick="updateSite(${i})">Edit</button></td>
     <td><button class="btn btn-danger" onclick="deleteWebsite(${i})">Delete</button></td>
   </tr>`
@@ -91,6 +101,7 @@ function updateSite(i) {
 function doneUpdate() {
   siteNameArr[currentIndex].namee = siteNameInput.value;
   siteNameArr[currentIndex].url = siteLinkInput.value;
+  checkHttp(siteNameArr[currentIndex]);
   localStorage.setItem(`web`, JSON.stringify(siteNameArr));
   displayWebsite(siteNameArr);
   document.getElementById(`submitBtn`).classList.replace(`d-none`, `d-inline-block`);
